@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm run dev:*)",
+      "Bash(npm run build)",
+      "Bash(del \"C:\\\\Users\\\\danie\\\\Desktop\\\\laclicsa\\\\pwa-mensajeros\\\\src\\\\lib\\\\components\\\\ProgressBar.svelte\")",
+      "Bash(del \"C:\\\\Users\\\\danie\\\\Desktop\\\\laclicsa\\\\pwa-mensajeros\\\\src\\\\lib\\\\utils\\\\fechas.js\")"
+    ]
+  }
+}
