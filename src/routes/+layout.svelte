@@ -10,6 +10,25 @@
 	let isLoading = $state(true);
 
 	onMount(async () => {
+		// Registrar Service Worker
+		if ('serviceWorker' in navigator) {
+			try {
+				const reg = await navigator.serviceWorker.register('/sw.js');
+				reg.addEventListener('updatefound', () => {
+					const newWorker = reg.installing;
+					if (newWorker) {
+						newWorker.addEventListener('statechange', () => {
+							if (newWorker.state === 'activated') {
+								window.location.reload();
+							}
+						});
+					}
+				});
+			} catch (e) {
+				console.log('SW registration failed:', e);
+			}
+		}
+
 		try {
 			await initializeData();
 			await Promise.all([
@@ -27,8 +46,8 @@
 </script>
 
 <svelte:head>
-	<title>Rutas Mensajeros</title>
-	<meta name="description" content="App para gestionar rutas de mensajeros" />
+	<title>Mensajeros Laclicsa</title>
+	<meta name="description" content="App para gestionar rutas de mensajeros Laclicsa" />
 </svelte:head>
 
 {#if isLoading}

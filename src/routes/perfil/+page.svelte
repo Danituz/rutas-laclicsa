@@ -98,9 +98,9 @@
 	<!-- Info adicional -->
 	<section class="mt-8 rounded-lg border border-gray-200 bg-white p-4">
 		<h3 class="mb-1 text-xs font-medium text-gray-400">Acerca de</h3>
-		<p class="text-sm text-gray-700">Rutas Mensajeros v1.0.0</p>
+		<p class="text-sm text-gray-700">Mensajeros Laclicsa v1.0.0</p>
 		<p class="mt-1 text-xs text-gray-400">
-			App offline para gestionar rutas de mensajeros.
+			App offline para gestionar rutas de mensajeros Laclicsa.
 		</p>
 	</section>
 </div>
