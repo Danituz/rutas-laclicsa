@@ -10,7 +10,7 @@
 	];
 </script>
 
-<nav class="fixed bottom-0 left-0 right-0 z-50 border-t border-gray-200 bg-white">
+<nav class="fixed bottom-0 left-0 right-0 z-50 border-t border-gray-200 bg-white pb-[env(safe-area-inset-bottom)]">
 	<div class="mx-auto flex max-w-lg">
 		{#each navItems as item}
 			{@const isActive = $page.url.pathname === item.href}
