@@ -58,7 +58,7 @@
 		</div>
 	</div>
 {:else}
-	<div class="min-h-screen pb-20">
+	<div class="min-h-screen pt-[env(safe-area-inset-top)] pb-20">
 		{@render children()}
 	</div>
 	<NavBar />
