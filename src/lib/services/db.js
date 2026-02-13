@@ -4,7 +4,7 @@ import { rutasSabados } from '$lib/data/rutasSabados.js';
 import { mensajerosDefault } from '$lib/data/mensajeros.js';
 
 const DB_NAME = 'mensajeros-db';
-const DB_VERSION = 1;
+const DB_VERSION = 2;
 
 let dbPromise = null;
 
@@ -14,13 +14,13 @@ let dbPromise = null;
 export async function getDB() {
 	if (!dbPromise) {
 		dbPromise = openDB(DB_NAME, DB_VERSION, {
-			upgrade(db) {
+			upgrade(db, oldVersion) {
 				// Store para rutas L-V
 				if (!db.objectStoreNames.contains('rutasLV')) {
 					db.createObjectStore('rutasLV', { keyPath: 'id' });
 				}
 
-				// Store para rutas Sábado
+				// Store para rutas Sabado
 				if (!db.objectStoreNames.contains('rutasSabado')) {
 					db.createObjectStore('rutasSabado', { keyPath: 'id' });
 				}
@@ -30,7 +30,7 @@ export async function getDB() {
 					db.createObjectStore('mensajeros', { keyPath: 'id' });
 				}
 
-				// Store para configuración
+				// Store para configuracion
 				if (!db.objectStoreNames.contains('config')) {
 					db.createObjectStore('config', { keyPath: 'key' });
 				}
@@ -42,6 +42,11 @@ export async function getDB() {
 						autoIncrement: true
 					});
 					store.createIndex('fecha', 'fecha');
+				}
+
+				// V2: Limpiar mensajeros para reinsertar con datos de cardex
+				if (oldVersion >= 1 && oldVersion < 2) {
+					db.transaction.objectStore('mensajeros').clear();
 				}
 			}
 		});
@@ -83,13 +88,13 @@ export async function initializeData() {
 		await tx.done;
 	}
 
-	// Configuración por defecto
+	// Configuracion por defecto
 	const config = await db.get('config', 'rotacionConfig');
 	if (!config) {
 		await db.put('config', {
 			key: 'rotacionConfig',
 			semanaInicio: new Date().toISOString(),
-			rotacionInicial: [1, 2, 3, 4] // Mensajero 1 -> Ruta 1, etc.
+			rotacionInicial: [1, 2, 3, 4]
 		});
 	}
 
@@ -131,9 +136,7 @@ export async function getMensajeros() {
 	return db.getAll('mensajeros');
 }
 
-
-// ========== CONFIGURACIÓN ==========
-
+// ========== CONFIGURACION ==========
 
 export async function getPerfilActual() {
 	const db = await getDB();
@@ -150,4 +153,3 @@ export async function getRotacionConfig() {
 	const db = await getDB();
 	return db.get('config', 'rotacionConfig');
 }
-

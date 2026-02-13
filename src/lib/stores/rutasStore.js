@@ -1,31 +1,20 @@
-import { writable, derived } from 'svelte/store';
+import { writable } from 'svelte/store';
 import { getRutasLV, getRutasSabado } from '$lib/services/db.js';
 
 // Store para rutas de L-V
 export const rutasLV = writable([]);
 
-// Store para rutas de Sábado
+// Store para rutas de Sabado
 export const rutasSabado = writable([]);
 
-// Store para el tipo de día seleccionado
+// Store para el tipo de dia seleccionado
 export const tipoDia = writable('lv'); // 'lv' o 'sabado'
-
-// Store derivado para rutas según el tipo de día
-export const rutasActuales = derived(
-	[tipoDia, rutasLV, rutasSabado],
-	([$tipo, $rutasLV, $rutasSabado]) => {
-		return $tipo === 'lv' ? $rutasLV : $rutasSabado;
-	}
-);
 
 /**
  * Carga todas las rutas desde IndexedDB
  */
 export async function cargarRutas() {
-	const [lv, sab] = await Promise.all([
-		getRutasLV(),
-		getRutasSabado()
-	]);
+	const [lv, sab] = await Promise.all([getRutasLV(), getRutasSabado()]);
 
 	rutasLV.set(lv);
 	rutasSabado.set(sab);
@@ -34,14 +23,14 @@ export async function cargarRutas() {
 }
 
 /**
- * Cambia el tipo de día visualizado
+ * Cambia el tipo de dia visualizado
  */
 export function cambiarTipoDia(tipo) {
 	tipoDia.set(tipo);
 }
 
 /**
- * Detecta automáticamente si es sábado
+ * Detecta automaticamente si es sabado
  */
 export function detectarTipoDia() {
 	const hoy = new Date();

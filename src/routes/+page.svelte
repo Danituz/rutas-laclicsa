@@ -1,44 +1,57 @@
 <script>
-	import { onMount, onDestroy } from 'svelte';
+	import { onMount } from 'svelte';
 	import { format } from 'date-fns';
 	import { es } from 'date-fns/locale';
-	import { MapPin, Clock, Coffee, ArrowRight, CheckCircle, Flag } from 'lucide-svelte';
+	import { MapPin, Coffee, CheckCircle } from 'lucide-svelte';
 	import SucursalItem from '$lib/components/SucursalItem.svelte';
 	import { mensajeroActual, mensajeroActualId } from '$lib/stores/mensajeroStore.js';
 	import {
 		rutaHoy,
 		paradaActual,
 		cargarRutaHoy,
-		iniciarActualizacionAutomatica
+		iniciarActualizacionAutomatica,
+		actualizarEstadoActual
 	} from '$lib/stores/rotacionStore.js';
 	import { obtenerInfoDia } from '$lib/services/rotacionService.js';
 
 	let infoDia = $state(obtenerInfoDia());
 	let horaActual = $state(format(new Date(), 'HH:mm'));
-	let stopUpdate = null;
-	let clockInterval = null;
 
-	onMount(async () => {
-		await cargarRutaHoy($mensajeroActualId);
-
-		if ($rutaHoy?.paradas) {
-			stopUpdate = iniciarActualizacionAutomatica($rutaHoy.paradas);
-		}
-
-		clockInterval = setInterval(() => {
+	onMount(() => {
+		const clockInterval = setInterval(() => {
 			horaActual = format(new Date(), 'HH:mm');
 		}, 1000);
+
+		// Actualizar inmediatamente al volver de background
+		function handleVisibility() {
+			if (document.visibilityState === 'visible') {
+				horaActual = format(new Date(), 'HH:mm');
+				infoDia = obtenerInfoDia();
+				if ($rutaHoy?.paradas) {
+					actualizarEstadoActual($rutaHoy.paradas);
+				}
+			}
+		}
+		document.addEventListener('visibilitychange', handleVisibility);
+
+		return () => {
+			clearInterval(clockInterval);
+			document.removeEventListener('visibilitychange', handleVisibility);
+		};
 	});
 
-	onDestroy(() => {
-		if (stopUpdate) stopUpdate();
-		if (clockInterval) clearInterval(clockInterval);
-	});
-
+	// Cargar ruta cuando cambia el mensajero
 	$effect(() => {
 		if ($mensajeroActualId) {
 			cargarRutaHoy($mensajeroActualId);
 		}
+	});
+
+	// Reiniciar auto-update cuando cambia la ruta
+	$effect(() => {
+		if (!$rutaHoy?.paradas) return;
+		const stop = iniciarActualizacionAutomatica($rutaHoy.paradas);
+		return () => stop();
 	});
 </script>
 

@@ -1,7 +1,7 @@
 <script>
 	import { MapPin, Clock, ChevronRight } from 'lucide-svelte';
 
-	let { ruta, isSelected = false, onClick = null } = $props();
+	let { ruta, onClick = null } = $props();
 
 	const totalParadas = $derived(ruta.paradas?.filter((p) => p.tipo === 'normal').length || 0);
 	const primeraParada = $derived(ruta.paradas?.[0]?.hora || '08:00');

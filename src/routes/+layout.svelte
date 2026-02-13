@@ -13,17 +13,7 @@
 		// Registrar Service Worker
 		if ('serviceWorker' in navigator) {
 			try {
-				const reg = await navigator.serviceWorker.register('/sw.js');
-				reg.addEventListener('updatefound', () => {
-					const newWorker = reg.installing;
-					if (newWorker) {
-						newWorker.addEventListener('statechange', () => {
-							if (newWorker.state === 'activated') {
-								window.location.reload();
-							}
-						});
-					}
-				});
+				await navigator.serviceWorker.register('/sw.js');
 			} catch (e) {
 				console.log('SW registration failed:', e);
 			}

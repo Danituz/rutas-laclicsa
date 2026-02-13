@@ -4,6 +4,8 @@
 
 	let { isOpen = false, title = '', onClose = () => {}, children } = $props();
 
+	let modalRef = $state(null);
+
 	function handleBackdropClick(e) {
 		if (e.target === e.currentTarget) {
 			onClose();
@@ -11,8 +13,25 @@
 	}
 
 	function handleKeydown(e) {
+		if (!isOpen) return;
 		if (e.key === 'Escape') {
 			onClose();
+		}
+		// Focus trap
+		if (e.key === 'Tab' && modalRef) {
+			const focusable = modalRef.querySelectorAll(
+				'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+			);
+			if (focusable.length === 0) return;
+			const first = focusable[0];
+			const last = focusable[focusable.length - 1];
+			if (e.shiftKey && document.activeElement === first) {
+				e.preventDefault();
+				last.focus();
+			} else if (!e.shiftKey && document.activeElement === last) {
+				e.preventDefault();
+				first.focus();
+			}
 		}
 	}
 </script>
@@ -32,6 +51,7 @@
 		tabindex="-1"
 	>
 		<div
+			bind:this={modalRef}
 			class="w-full max-w-lg overflow-hidden rounded-t-2xl border border-gray-200 bg-white shadow-lg sm:rounded-xl"
 			transition:fly={{ y: 100, duration: 300 }}
 		>

@@ -7,7 +7,9 @@
       "Bash(del \"C:\\\\Users\\\\danie\\\\Desktop\\\\laclicsa\\\\pwa-mensajeros\\\\src\\\\lib\\\\utils\\\\fechas.js\")",
       "Bash(python3:*)",
       "Bash(node -e:*)",
-      "Bash(npx serve build -l 3000)"
+      "Bash(npx serve build -l 3000)",
+      "Bash(xxd:*)",
+      "Bash(findstr:*)"
     ]
   }
 }

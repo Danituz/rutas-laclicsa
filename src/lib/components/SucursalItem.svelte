@@ -15,10 +15,11 @@
 
 <div
 	class="flex items-center gap-3 rounded-lg border px-3 py-2.5 transition-all {isActual
-		? 'border-blue-200 bg-blue-50'
+		? ''
 		: isPasada
 			? 'border-gray-100 bg-gray-50 opacity-50'
 			: 'border-gray-200 bg-white hover:border-gray-300'}"
+	style={isActual ? `border-color: ${color}30; background-color: ${color}10` : ''}
 >
 	<!-- Hora -->
 	<div class="w-24 shrink-0 text-right">
@@ -31,7 +32,7 @@
 		</span>
 	</div>
 
-	<!-- Línea vertical -->
+	<!-- Linea vertical -->
 	<div class="flex flex-col items-center">
 		<div
 			class="h-2 w-2 rounded-full {isActual ? '' : isPasada ? 'bg-gray-300' : 'border-2 border-gray-300 bg-white'}"
@@ -55,7 +56,10 @@
 
 	<!-- Badge -->
 	{#if isProxima}
-		<span class="shrink-0 rounded border border-blue-200 bg-blue-50 px-2 py-0.5 text-[10px] font-medium text-blue-600">
+		<span
+			class="shrink-0 rounded border px-2 py-0.5 text-[10px] font-medium"
+			style="border-color: {color}40; background-color: {color}10; color: {color}"
+		>
 			Siguiente
 		</span>
 	{/if}

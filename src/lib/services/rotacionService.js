@@ -41,9 +41,8 @@ export async function calcularRutaParaFecha(mensajeroId, fecha = new Date()) {
 		return { rutaId: mensajeroId, esSabado: isSaturday(fecha) };
 	}
 
-	// Calcular nueva posición con rotación
-	const nuevaPosicion = (posicionInicial + semanasTranscurridas) % 4;
-	const rutaId = ((nuevaPosicion % 4) + 4) % 4 + 1; // Asegurar valor 1-4
+	// Calcular nueva posicion con rotacion (maneja semanas negativas)
+	const rutaId = (((posicionInicial + semanasTranscurridas) % 4) + 4) % 4 + 1;
 
 	return {
 		rutaId,

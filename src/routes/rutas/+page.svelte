@@ -20,7 +20,7 @@
 	const rutasActuales = $derived($tipoDia === 'lv' ? $rutasLV : $rutasSabado);
 </script>
 
-<div class="mx-auto max-w-lg px-5 py-8">
+<div class="mx-auto max-w-lg px-4 py-6">
 	<header class="mb-8">
 		<h1 class="text-xl font-semibold text-gray-800">Rutas</h1>
 		<p class="mt-1 text-sm text-gray-400">Consulta todas las rutas disponibles</p>

@@ -39,7 +39,7 @@
 	const inicioSemana = $derived(startOfWeek(semanaVista, { weekStartsOn: 1 }));
 </script>
 
-<div class="mx-auto max-w-lg px-5 py-8">
+<div class="mx-auto max-w-lg px-4 py-6">
 	<header class="mb-6">
 		<h1 class="text-xl font-semibold text-gray-800">Rotación</h1>
 		<p class="text-sm text-gray-400">Rotación semanal de rutas</p>
